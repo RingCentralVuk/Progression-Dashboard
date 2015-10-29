@@ -1,0 +1,424 @@
+<apex:page standardcontroller="Employee__c" extensions="ManilaCareerDashboardClass"  sidebar="false" showHeader="false">
+<script> 
+ var previousOnload = window.onload; 
+ window.onload = function() { if (previousOnload) { previousOnload(); } setColor(); } 
+
+ function setColor() {
+        var property = document.getElementById("tnrbtn");
+        var property2 = document.getElementById("inpbtn");
+        var property3 = document.getElementById("qabtn");
+        var property4 = document.getElementById("spbtn");
+        var property5 = document.getElementById("npsbtn");
+        var tnrscore = document.getElementById("tnrhdn").value;
+        var alvl = document.getElementById("agentlevel").value;
+        var incp = document.getElementById("inphdn").value; 
+        var qascore = document.getElementById("qahdn").value;
+        var salesperf = document.getElementById("sphdn").value; 
+        var npsscore = document.getElementById("npshdn").value; 
+        var mnid = document.getElementById("managerid").value;  
+        var uprof = document.getElementById("UserProfile").value; 
+        var udiv = document.getElementById("UserDivision").value;
+        var IndustryCert1 = document.getElementById("industrycert1").value;
+        var IndustryCert2 = document.getElementById("industrycert2").value;
+        var IndustryCert3 = document.getElementById("industrycert3").value;
+        var IndustryCert4 = document.getElementById("industrycert4").value;
+        var IndustryCert5 = document.getElementById("industrycert5").value;
+        var IndustryCert6 = document.getElementById("industrycert6").value;
+        
+        property5.style.backgroundColor = "#D0F0C0";
+        if (npsscore > 0){
+                document.getElementById("npsbtn").value = npsscore;
+        }
+        else{
+                document.getElementById("npsbtn").value = "0.00";
+        }
+        
+        if (alvl == "Level 0"  && tnrscore >= 0.5) {
+            property.style.backgroundColor = "#D0F0C0";    
+        }
+        else if (alvl == "Level 1" && tnrscore >= 1.5){
+            property.style.backgroundColor = "#D0F0C0"; 
+        }
+        else if (alvl == "Level 2" && tnrscore >= 2.5){
+            property.style.backgroundColor = "#D0F0C0";
+        }
+        else if (alvl == "Level 3" && tnrscore >= 3.5){
+            property.style.backgroundColor = "#D0F0C0"; 
+        }
+        else if (alvl == ""){
+            property.style.backgroundColor = "#D0F0C0";
+            document.getElementById("tnrbtn").value ="0.00";
+        }
+        else if (alvl == "Level 4" || alvl == "Level 5"){
+            property.style.backgroundColor = "#D0F0C0"; 
+        }
+        else {
+            property.style.backgroundColor = "#FF0000";
+        }
+        
+        if (alvl == "" && incp <= 0) {
+            property2.style.backgroundColor = "#D0F0C0";    
+            document.getElementById("inpbtn").value ="0.00";
+        }
+        else if (incp >= 0 && incp < 2) {
+            property2.style.backgroundColor = "#D0F0C0"; 
+            document.getElementById("inpbtn").value = incp;
+        }
+        else if (incp >= 2 && incp < 3) {
+            property2.style.backgroundColor = "#779ECB";    
+            document.getElementById("inpbtn").value = incp;
+        }
+        else if (incp >= 3 && incp < 4) {
+            property2.style.backgroundColor = "#FFD1DC";    
+            document.getElementById("inpbtn").value = incp;
+        }
+        else if (incp >= 4 && incp < 5) {
+            property2.style.backgroundColor = "#BDBBD7";    
+            document.getElementById("inpbtn").value = incp;
+        }
+        else if (incp >= 5 && incp < 6) {
+            property2.style.backgroundColor = "#E9692C";    
+            document.getElementById("inpbtn").value = incp;
+        }
+        else{
+            property2.style.backgroundColor = "#FF0000";    
+            document.getElementById("inpbtn").value = incp;
+        }
+       
+         
+        if (qascore > 0){    
+            if ((qascore >= 85 && alvl == "Level 0") || (qascore >= 87.5 && alvl == "Level 1") || (alvl == "Level 2" || alvl == "Level 3" || alvl == "Level 4")) {
+                property3.style.backgroundColor = "#D0F0C0";    
+            }
+            else{
+                 property3.style.backgroundColor = "#FF0000"; 
+            }
+        
+            if (alvl == "Level 0"){
+                 document.getElementById("qabtn").value = parseFloat(qascore).toFixed(2) + " (Average 3 mos.)";
+                 }
+            else if (alvl == "Level 1"){
+                 document.getElementById("qabtn").value = parseFloat(qascore).toFixed(2) + " (Average 6 mos.)";    
+                 }
+            else {
+                 document.getElementById("qabtn").value = parseFloat(qascore).toFixed(2) + " (Average 1 mo.)";    
+                 }
+        }     
+        else{
+            property3.style.backgroundColor = "#D0F0C0";   
+            document.getElementById("qabtn").value = "0.00";
+        }
+        
+        if (salesperf > 0){
+            if (salesperf >= 90 && alvl=="Level 0") {
+                document.getElementById("spbtn").value = parseFloat(salesperf).toFixed(2) + "%";
+                property4.style.backgroundColor = "#D0F0C0";    
+            }
+            else if (salesperf >= 100 && alvl!="Level 0") {
+                document.getElementById("spbtn").value = parseFloat(salesperf).toFixed(2) + "%";
+                property4.style.backgroundColor = "#D0F0C0";    
+            }
+            else{
+                document.getElementById("spbtn").value = parseFloat(salesperf).toFixed(2) + "%";
+                property4.style.backgroundColor = "#FF0000"; 
+            }
+            }
+        else{
+            property4.style.backgroundColor = "#D0F0C0";
+            document.getElementById("spbtn").value = "0.00";    
+        }
+        
+        document.getElementById("Level1").style.display = 'none';
+        document.getElementById("Level2").style.display = 'none';
+        document.getElementById("Level3").style.display = 'none';
+        document.getElementById("Level4").style.display = 'none';
+        if (alvl=="Level 0"){
+            document.getElementById("Level1").style.display = 'inline';
+        }
+        if (alvl=="Level 1"){
+            document.getElementById("Level2").style.display = 'inline';
+        }
+        if (alvl=="Level 2"){
+            document.getElementById("Level3").style.display = 'inline';
+        }
+        if (alvl=="Level 3"){
+            document.getElementById("Level4").style.display = 'inline';
+        }
+        
+        if(mnid=="00580000003v7OfAAI" || mnid=="0058000000383lXAAQ" || udiv=="Manager" || udiv=="Coaching" || uprof=="00e80000001ONutAAG" || uprof=="00e80000000l1hKAAQ"){
+            document.getElementById("agentdiv").style.display = 'inline';
+        }    
+        else{
+            document.getElementById("agentdiv").style.display = 'none';
+        }
+        
+        if(IndustryCert1=="true"){
+            document.getElementById("industrydiv1").style.display = 'inline';
+            document.getElementById("industrydiv1b").style.display = 'none';
+        }    
+        else{
+            document.getElementById("industrydiv1").style.display = 'none';
+            document.getElementById("industrydiv1b").style.display = 'inline';
+        }
+        if(IndustryCert2=="true"){
+            document.getElementById("industrydiv2").style.display = 'inline';
+            document.getElementById("industrydiv2b").style.display = 'none';
+        }    
+        else{
+            document.getElementById("industrydiv2").style.display = 'none';
+            document.getElementById("industrydiv2b").style.display = 'inline';
+        }
+        if(IndustryCert3=="true"){
+            document.getElementById("industrydiv3").style.display = 'inline';
+            document.getElementById("industrydiv3b").style.display = 'none';
+        }    
+        else{
+            document.getElementById("industrydiv3").style.display = 'none';
+            document.getElementById("industrydiv3b").style.display = 'inline';
+        }
+        if(IndustryCert4=="true"){
+            document.getElementById("industrydiv4").style.display = 'inline';
+            document.getElementById("industrydiv4b").style.display = 'none';
+        }    
+        else{
+            document.getElementById("industrydiv4").style.display = 'none';
+            document.getElementById("industrydiv4b").style.display = 'inline';
+        }
+        if(IndustryCert5=="true"){
+            document.getElementById("industrydiv5").style.display = 'inline';
+            document.getElementById("industrydiv5b").style.display = 'none';
+        }    
+        else{
+            document.getElementById("industrydiv5").style.display = 'none';
+            document.getElementById("industrydiv5b").style.display = 'inline';
+        }
+        if(IndustryCert6=="true"){
+            document.getElementById("industrydiv6").style.display = 'inline';
+            document.getElementById("industrydiv6b").style.display = 'none';
+        }    
+        else{
+            document.getElementById("industrydiv6").style.display = 'none';
+            document.getElementById("industrydiv6b").style.display = 'inline';
+        }
+        
+    }
+</script>
+<script>
+function search()
+{
+    sendvaltocontroller();
+}
+</script>
+    <style>   
+  <!-- Css for Tab onIndustry Page -->  
+     .clsbtn{
+     width: 220px;
+     height: 32px;
+     background-position: 63px -183px !important;
+   }
+   <!-- Css  Hover for Tab Button onIndustry Page -->
+  .clsbtn:hover {
+    background-position: 63px -132px !important;
+    color: white !important;
+  }  
+ 
+</style>
+
+<apex:form >
+<body onload="setColor()">
+<apex:pageBlock >
+<br/>
+
+<table border="0">
+<tr>
+<td colspan="2" align="left" width="60%">
+<div id="agentdiv">
+<b>Agent Name: </b>    
+<apex:selectList size="1" onchange="search()" value="{!selectedVal}"> 
+<apex:selectOptions value="{!UserList}" /> 
+</apex:selectList>
+<br/>
+</div>
+<input type="hidden" id="managerid" value="{!tid}"/>
+<input type="hidden" id="UserDivision" value="{!UserDivision}"/>
+<input type="hidden" id="UserProfile" value="{!UserProfile}"/>
+<input type="hidden" id="industrycert1" value="{!industrycert1}"/>
+<input type="hidden" id="industrycert2" value="{!industrycert2}"/>
+<input type="hidden" id="industrycert3" value="{!industrycert3}"/>
+<input type="hidden" id="industrycert4" value="{!industrycert4}"/>
+<input type="hidden" id="industrycert5" value="{!industrycert5}"/>
+<input type="hidden" id="industrycert6" value="{!industrycert6}"/>
+<apex:actionFunction name="sendvaltocontroller" action="{!checkops}"/>
+</td>
+<td align="center" rowspan="7">
+<apex:image url="{!UserfullPhoto}" />
+<br/><br/>
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="left" width="60%">
+<b>Current Agent Level: {!agentlevel}</b>
+<br/><br/><br/>
+</td>
+</tr>
+<tr>
+<td align="center" width="30%">
+<b>Tenure</b>
+</td>
+<td align="center" width="30%">
+<b>Attendance Incident Point</b>
+</td>
+</tr>
+<tr>
+<td width="30%">
+                        <input type="hidden" id="agentlevel" value="{!agentlevel}"/>
+                        <input type="hidden" id="tnrhdn" value="{!intTenureship}"/>
+                        <input type="button" id="tnrbtn" value="{!intTenureship} month/s"
+                            title="" style="width: 240px; height:50px;font-size:20px" styleclass="clsbtn">
+                        </input>
+</td>
+<td width="30%">
+                        <input type="hidden" id="inphdn" value="{!incidentPoint}"/>
+                        <input type="button" id="inpbtn" value="{!incidentPoint} pts"  title="" style="width: 240px; height:50px;;font-size:20px" styleclass="clsbtn">
+                        </input>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="60%">
+<br/>
+</td>
+</tr>
+<tr>
+<td align="center" width="30%">
+<b>QA Score</b>
+</td>
+<td align="center" width="30%">
+<b>Sales Performance</b>
+</td>
+</tr>
+<tr>
+<td width="30%">
+                        <input type="hidden" id="qahdn" value="{!QMFScore}"/>
+                        <input type="button" id="qabtn"
+                            title="" style="width: 240px; height:50px;font-size:20px" styleclass="clsbtn">
+                        </input>
+</td>
+<td width="30%">
+                      <input type="hidden" id="sphdn" value="{!SalesPerf}"/>
+                        <input type="button" id="spbtn"
+                            title="" style="width: 240px; height:50px;font-size:20px" styleclass="clsbtn">
+                        </input>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="60%">
+<br/>
+</td>
+</tr>
+<tr>
+<td align="center" width="60%" colspan="2">
+<b>NPS Score</b>
+</td>
+</tr>
+<tr>
+<td width="60%" colspan="2" align="center">
+                        <input type="hidden" id="npshdn" value="{!NPSScore}"/>
+                        <input type="button" id="npsbtn"
+                            title="" style="width: 240px; height:50px;font-size:20px" styleclass="clsbtn">
+                        </input>
+</td>
+</tr>
+
+<tr>
+<td colspan="2" width="60%">
+<br/>
+</td>
+</tr>
+</table>
+<br/>
+<b>Legend:</b>
+<table border="0">
+<tr>
+<td bgcolor="#D0F0C0" width="6px"></td>
+<td> Safe</td>
+<td width="12px"></td>
+<td bgcolor="#779ECB" width="6px"> </td>
+<td> Coaching</td>
+<td width="12px"></td>
+<td bgcolor="#FFD1DC" width="6px"> </td>
+<td> Verbal</td>
+</tr>
+<tr>
+<td bgcolor="#BDBBD7" width="6px"> </td>
+<td> Written</td>
+<td width="12px"></td>
+<td bgcolor="#E9692C" width="6px"> </td>
+<td> Final</td>
+<td width="12px"></td>
+<td bgcolor="#FF0000" width="6px"> </td>
+<td>Failed</td>
+</tr>
+<tr>
+<td colspan="8">
+<br/>
+<b>Level Up Criteria:</b>
+</td>
+</tr>
+<tr>
+<td colspan="8">
+<div style="display:none" id="Level1">
+To Level 1:<br/>
+Tenure: Has been with RC Sales for at least 6 months.<br/>
+Attendance: Accumulated less than 2.00 attendance incident points at the time of review.<br/>
+QMF: Maintained average QA Score of at least 85% in the last 3 month rolling period.<br/>
+Sales Performance: Achieved at least 90% average of goal in the last 6 month rolling period or from date of being assigned to a sales team.
+</div>
+<div style="display:none" id="Level2">
+To Level 2:<br/>
+Tenure: Has been with RC Sales for at least 18 months without extended leaves.<br/>
+Attendance: Accumulated less than 2.75 attendance incident points at the time of review.<br/>
+QMF: Maintained average QA Score of at least 87.5% in the last 6 month rolling period.<br/>
+Sales Performance: Achieved at least 100% average of sales goal in the last 6 month rolling period.
+</div>
+<div style="display:none" id="Level3">
+To Level 3:<br/>
+Tenure: Must be a Level 2 rep. Has been with RC Sales for at least 30 months without extended leaves.<br/>
+Attendance: Accumulated less than 2.75 attendance incident points at the time of review.<br/>
+QMF: N/A<br/>
+Sales Performance: Achieved at least 100% average of sales goal in the last 12 month rolling period.
+</div>
+<div style="display:none" id="Level4">
+To Level 4:<br/>
+Tenure: Must be a Level 3 rep. Has been with RC Sales for at least 42 months without extended leaves.<br/>
+Attendance: Accumulated less than 2.75 attendance incident points at the time of review.<br/>
+QMF: N/A<br/>
+Sales Performance: Achieved at least 100% average of sales goal in the last 12 month rolling period.
+</div>
+</td>
+</tr>
+</table>
+<br/>
+<hr/>
+<b><a href="https://learning.ringcentral.com/#/catalog/category/40731" target="_blank">Industry Certification:</a></b>
+<table border="0">
+<tr>
+<td colspan="2"><div id="industrydiv1"><a href="https://learning.ringcentral.com/#/search/all/ID%3A198937" target="_blank"><apex:image url="{!$Resource.IC_Legal}"/></a></div><div id="industrydiv1b"><a href="https://learning.ringcentral.com/#/search/all/ID%3A198937" target="_blank"><apex:image url="{!$Resource.IC_Legal_Old}"/></a></div></td>
+<td width="8px"></td>
+<td colspan="2"><div id="industrydiv2"><a href="https://learning.ringcentral.com/#/search/all/ID%3A198761" target="_blank"><apex:image url="{!$Resource.IC_Healthcare}"/></a></div><div id="industrydiv2b"><a href="https://learning.ringcentral.com/#/search/all/ID%3A198761" target="_blank"><apex:image url="{!$Resource.IC_Healthcare_Old}"/></a></div></td>
+</tr>
+<tr>
+<td colspan="2"><div id="industrydiv3"><a href="https://learning.ringcentral.com/#/search/all/ID%3A199167" target="_blank"><apex:image url="{!$Resource.IC_High_Technology}"/></a></div><div id="industrydiv3b"><a href="https://learning.ringcentral.com/#/search/all/ID%3A199167" target="_blank"><apex:image url="{!$Resource.IC_High_Technology_Old}"/></a></div></td>
+<td width="8px"></td>
+<td colspan="2"><div id="industrydiv4"><apex:image url="{!$Resource.IC_Government}"/></div><div id="industrydiv4b"><apex:image url="{!$Resource.IC_Government_Old}"/></div></td>
+</tr>
+<tr>
+<td colspan="2"><div id="industrydiv5"><apex:image url="{!$Resource.IC_Real_Estate}"/></div><div id="industrydiv5b"><apex:image url="{!$Resource.IC_Real_Estate_Old}"/></div></td>
+<td width="8px"></td>
+<td colspan="2"><div id="industrydiv6"><a href="https://learning.ringcentral.com/#/search/all/ID%3A199220" target="_blank"><apex:image url="{!$Resource.IC_Construction}"/></a></div><div id="industrydiv6b"><a href="https://learning.ringcentral.com/#/search/all/ID%3A199220" target="_blank"><apex:image url="{!$Resource.IC_Construction_Old}"/></a></div></td>
+</tr>
+</table>
+</apex:pageBlock>
+</body>
+</apex:form>
+</apex:page>
